@@ -1,14 +1,23 @@
 package com.floreria.models;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FloresModel {
+public class FlowersModel {
 	
 	int id;
 	String name;
 	float price;
 	
+	public FlowersModel() {		
+	}
+	
+	public FlowersModel(int id, String name, float price) {
+		this.id=id;
+		this.name=name;
+		this.price=price;
+	}
 	/**
 	 * @return the id
 	 */
@@ -44,9 +53,5 @@ public class FloresModel {
 	 */
 	public void setPrice(float price) {
 		this.price = price;
-	}
-
-	
-	
-	
+	}	
 }
