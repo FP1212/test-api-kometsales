@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class FlowersModel implements Comparable<FlowersModel>{
 	
-	
 	int id;
 	String name;
 	float price;

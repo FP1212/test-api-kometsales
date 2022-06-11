@@ -17,55 +17,56 @@ import ch.qos.logback.classic.Logger;
 @Service
 public class FlowersService {
 
+	// Static Flowers List Variable
+	static List<FlowersModel> flowersList;
+
+	private static final String KOMET_QUOTE = "-kometsales";
+	public static final String MAX_FLOWER_PRICE = "20";
+
 	static Logger logger = (Logger) LoggerFactory.getLogger(FlowersService.class);
 
-	private static List<FlowersModel> listFlores;
-	private static final String KOMET_QUOTE = "-kometsales";
-	private static final int MAX_FLOWER_PRICE = 20;
-
-	public static void setFlowersList(List<FlowersModel> list) {
-		FlowersService.listFlores = list;
-		
+	public void setFlowersList(List<FlowersModel> list) {
+		FlowersService.flowersList = list;
 	}
-
-	public static List<FlowersModelDTO> getFlowersList() {
-		List<FlowersModelDTO> listFloresKomet = new ArrayList<>();
+	
+	public List<FlowersModelDTO> getFlowersList() {
+		List<FlowersModelDTO> flowersListKomet = new ArrayList<>();
 
 		// Deep Clone
-		Iterator<FlowersModel> iterator = FlowersService.listFlores.iterator();
+		Iterator<FlowersModel> iterator = FlowersService.flowersList.iterator();
 
 		while (iterator.hasNext()) {
 			FlowersModel flower = iterator.next();
 			FlowersModelDTO quotedFlower = new FlowersModelDTO(flower.getName() + KOMET_QUOTE, flower.getPrice());
-			listFloresKomet.add(quotedFlower);
+			flowersListKomet.add(quotedFlower);
 		}
 
-		Collections.sort(listFloresKomet);
+		Collections.sort(flowersListKomet);
 
-		return listFloresKomet;
+		return flowersListKomet;
 	}
 
-	public static List<FlowersModel> getFlowersByPrice() {
-		List<FlowersModel> listFloresKomet = new ArrayList<>();
+	public List<FlowersModel> getFlowersByPrice(int price) {
+		List<FlowersModel> flowersListKomet = new ArrayList<>();
 
 		// Deep Clone
-		Iterator<FlowersModel> iterator = FlowersService.listFlores.iterator();
+		Iterator<FlowersModel> iterator = FlowersService.flowersList.iterator();
 
 		while (iterator.hasNext()) {
 			FlowersModel flower = iterator.next();
-			if (flower.getPrice() >= MAX_FLOWER_PRICE) {
-				FlowersModel quotedFlower = new FlowersModel(flower.getId(), flower.getName() + KOMET_QUOTE,
+			if (flower.getPrice() >= price) {
+				FlowersModel quotedFlower = new FlowersModel(flower.getId(), flower.getName(),
 						flower.getPrice());
-				listFloresKomet.add(quotedFlower);
+				flowersListKomet.add(quotedFlower);
 			}
 		}
 
-		return listFloresKomet;
+		return flowersListKomet;
 	}
 
-	public static String deleteFlowerById(int id) {
+	public String deleteFlowerById(int id) {
 		try {
-			if (FlowersService.listFlores.removeIf(flower -> flower.getId() == id))
+			if (FlowersService.flowersList.removeIf(flower -> flower.getId() == id))
 				return String.format("Item identfied by id:%d, Deleted", id);
 			else
 				return String.format("Item id:%d not found, omitted", id);
@@ -75,8 +76,8 @@ public class FlowersService {
 		}
 	}
 
-	public static List<FlowersModel> getFlowersByName(String name) {
-		return FlowersService.listFlores.stream().filter(flower -> flower.getName().contains(name))
+	public List<FlowersModel> getFlowersByName(String name) {
+		return FlowersService.flowersList.stream().filter(flower -> flower.getName().contains(name))
 				.collect(Collectors.toList());
 	}
 
